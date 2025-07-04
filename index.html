@@ -81,23 +81,23 @@
 
     @keyframes floatFall {
       0% {
-        transform: translateX(0) translateY(-50px);
+        transform: translateX(30px) translateY(-60px);
         opacity: 0;
       }
       10% {
         opacity: 1;
       }
       25% {
-        transform: translateX(30px) translateY(25vh);
+        transform: translateX(-30px) translateY(25vh);
       }
       50% {
-        transform: translateX(-30px) translateY(50vh);
+        transform: translateX(30px) translateY(50vh);
       }
       75% {
-        transform: translateX(30px) translateY(75vh);
+        transform: translateX(-30px) translateY(75vh);
       }
       100% {
-        transform: translateX(-30px) translateY(110vh);
+        transform: translateX(30px) translateY(110vh);
         opacity: 0;
       }
     }
@@ -157,23 +157,78 @@
       user-select: none;
       z-index: 5;
     }
+
+    /* Modal estilo recuadro */
+    #modalMensaje {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #330033cc;
+      color: #ff99cc;
+      font-family: 'Press Start 2P', cursive;
+      font-size: 1.5rem;
+      padding: 30px 40px;
+      border: 3px solid #ff66ff;
+      border-radius: 15px;
+      box-shadow:
+        0 0 10px #ff66ff,
+        0 0 20px #ff00cc;
+      text-align: center;
+      z-index: 9999;
+      display: none;
+      user-select: none;
+      animation: fadeIn 0.7s ease forwards;
+      position: fixed;
+      overflow: visible;
+    }
+
+    /* Emoji 💗 en la esquina esquina */
+    #modalMensaje::before {
+      content: "💗";
+      position: absolute;
+      top: 0;
+      right: 0;
+      font-size: 3rem;
+      pointer-events: none;
+      user-select: none;
+      opacity: 0.9;
+      filter: drop-shadow(0 0 3px #ff66ff);
+      margin: 0;
+      padding: 0;
+      line-height: 1;
+      transform: translate(50%, -50%);
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0;}
+      to {opacity: 1;}
+    }
   </style>
 </head>
 <body>
-  <div class="container">
+  <div class="container" id="mainContent">
     <div class="neon-title">¿JUGAMOS ROBLOXITO?</div>
   </div>
 
-  <div class="buttons">
+  <div class="buttons" id="mainContentButtons">
     <button id="yesBtn">Sí</button>
     <button id="noBtn">No</button>
   </div>
 
-  <img class="hello-kitty" src="https://i.ibb.co/dwGnJpK9/images.jpg" alt="Hello Kitty linda" />
+  <img class="hello-kitty" src="https://i.ibb.co/dwGnJpK9/images.jpg" alt="Hello Kitty linda" id="mainContentImg" />
+
+  <!-- Modal mensaje -->
+  <div id="modalMensaje">Sabía que dirías que sí :33</div>
 
   <script>
     const yesBtn = document.getElementById('yesBtn');
     const noBtn = document.getElementById('noBtn');
+
+    const mainContent = document.getElementById('mainContent');
+    const mainContentButtons = document.getElementById('mainContentButtons');
+    const mainContentImg = document.getElementById('mainContentImg');
+    const modalMensaje = document.getElementById('modalMensaje');
 
     let clicks = 0;
     const max = 20;
@@ -194,16 +249,27 @@
     });
 
     yesBtn.addEventListener('click', () => {
-      window.location.href = 'https://www.roblox.com/es/games/92171645661524/Carry-an-Egg-2-Player-Obby';
+      // Ocultar todo lo demás
+      mainContent.style.display = 'none';
+      mainContentButtons.style.display = 'none';
+      mainContentImg.style.display = 'none';
+
+      // Mostrar modal mensaje
+      modalMensaje.style.display = 'block';
+
+      // Esperar 2 segundos antes de redirigir
+      setTimeout(() => {
+        window.location.href = 'https://www.roblox.com/es/home';
+      }, 2000);
     });
 
     const fresas = ['#ff69b4','#ff80bf','#ff4da6','#ff99cc','#ff5eaa'];
-    const emos = ['🥰','💝','💞','💗','🩷','🌺','🌷','🌟'];
+    const emos = ['🥰','💝','💞','💗','🩷','🌺','🌹','✨','❤️‍🩹'];
 
     function crearFalling() {
       const d = document.createElement('div');
       d.className = 'falling';
-      const esTexto = Math.random() < 0.7; // 70% "si?", 30% emoji
+      const esTexto = Math.random() < 0.7;
       if (esTexto) {
         d.innerText = 'si?';
         d.style.color = fresas[Math.floor(Math.random() * fresas.length)];
@@ -218,12 +284,12 @@
       setTimeout(() => d.remove(), 18000);
     }
 
-    // Lluvia inicial más fuerte
+    // Lluvia inicial fuerte
     for (let i = 0; i < 35; i++) setTimeout(crearFalling, i * 150);
     // Lluvia constante
     setInterval(crearFalling, 500);
 
-    // Estrellas cayendo por fondo
+    // Estrellas de fondo
     const estrellas = ['★','✦','✶','✺','✹'];
     const sizes = ['small', 'medium', 'large'];
 
